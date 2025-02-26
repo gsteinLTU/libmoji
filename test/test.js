@@ -16,10 +16,54 @@ const randomMoji = () => {
     let img = document.createElement('img');
     img.src = testUrl;
     img.width = 200;
-    document.body.appendChild(img);
+    document.body.querySelector("#randos").appendChild(img);
 };
 
-for (let i = 0; i < 8; i++) {
+for (let i = 0; i < 4; i++) {
     randomMoji();
 }
+
+document.querySelector("button#build").addEventListener("click", () => {
+    let pose = document.querySelector("select#pose").value;
+    let gender = document.querySelector("select#gender").value;
+    let genderVal = gender == 'male'? 1 : 2;
+    let style = libmoji.styles[0];
+    let brand = libmoji.getBrands(gender).filter((brand) => brand["id"] == document.querySelector("select#brands").value)[0];
+
+    console.log(libmoji.getTraits(gender,style[0]));
+
+    let traits = libmoji.randTraits(libmoji.getTraits(gender,style[0]));
+    let outfit = libmoji.randOutfit(libmoji.getOutfits(brand));
+
+    let testUrl = libmoji.buildPreviewUrl(pose,3,gender == 'male'? 1 : 2,style[1],0,traits,outfit);
+    let img = document.createElement('img');
+    img.src = testUrl;
+    img.width = 200;
+    Array.from(document.body.querySelector("#bitmoji").children).forEach((child) => { child.remove(); });
+    document.body.querySelector("#bitmoji").appendChild(img);
+
+});
+
+document.querySelector("select#gender").addEventListener("change", (e) => {
+    // Update the traits and brands
+    let traits = libmoji.getTraits(e.target.value,libmoji.styles[0][0]);
+    let brands = libmoji.getBrands(e.target.value);
+
+    // Clear the traits and brands
+    //Array.from(document.body.querySelector("#traits").children).forEach((child) => { child.remove(); });
+    Array.from(document.body.querySelector("#brands").children).forEach((child) => { child.remove(); });
+    //Array.from(document.body.querySelector("#outfits").children).forEach((child) => { child.remove(); });
+
+    // Add the brands
+    brands.forEach((brand) => {
+        let brandOption = document.createElement("option");
+        brandOption.value = brand["id"];
+        brandOption.innerText = brand["name"];
+        document.body.querySelector("#brands").appendChild(brandOption);
+    });
+    
+});
+
+// Change gender to trigger the event
+document.querySelector("select#gender").dispatchEvent(new Event('change'));
 
