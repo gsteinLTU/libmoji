@@ -17,7 +17,8 @@ const genders = [["male",1],["female",2]];
 const poses = ["fashion","head","body"];
 
 // holds all possible styles and their values
-const styles = [["bitstrips",1],["bitmoji",4],["cm",5]];
+//const styles = [["bitstrips",1],["bitmoji",4],["cm",5]];
+const styles = [["cm",5]];
 
 // holds the part of the preview avatar url that is the same for all combinations
 const basePreviewUrl = "https://preview.bitmoji.com/avatar-builder-v3/preview/";
@@ -130,7 +131,7 @@ function buildFriendmojiUrl (comicId, avatarId1, avatarId2, transparent, scale) 
   return `${baseCpanelUrl}${comicId}-${avatarId1}-${avatarId2}-v3.png?transparent=${transparent}&scale=${scale}`;
 }
 // export all functions to be used
-module.exports = {
+export default {
   templates: templates,
   friends: friends,
   genders: genders,
