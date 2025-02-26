@@ -34,7 +34,15 @@ document.querySelector("button#build").addEventListener("click", () => {
     console.log(outfit);
     console.log(libmoji.getTraits(gender,style[0]));
 
-    let traits = libmoji.randTraits(libmoji.getTraits(gender,style[0]));
+    let traits = [];
+
+    Array.from(document.body.querySelector("#traits").children).forEach((child) => {
+        let trait = child.querySelector("select");
+        if (trait) {
+            traits.push([trait.name,trait.value]);
+        }
+    }
+    );
 
     let testUrl = libmoji.buildPreviewUrl(pose,3,gender == 'male'? 1 : 2,style[1],0,traits,outfit);
     let img = document.createElement('img');
@@ -64,6 +72,27 @@ document.querySelector("select#gender").addEventListener("change", (e) => {
     });
     
     document.querySelector("select#brands").dispatchEvent(new Event('change'));
+
+    // Add the traits
+    traits.forEach((trait) => {
+        console.log(trait);
+        let traitDiv = document.createElement("div");
+        let traitLabel = document.createElement("label");
+        traitLabel.innerText = trait.key;
+        traitDiv.appendChild(traitLabel);
+        let traitInput = document.createElement("select");
+        traitInput.id = trait.key;
+        traitInput.name = trait.key;
+
+        for (let i = 0; i < trait.options.length; i++) {
+            let option = document.createElement("option");
+            option.value = trait.options[i].value;
+            option.innerText = trait.options[i].value;
+            traitInput.appendChild(option);
+        }
+        traitDiv.appendChild(traitInput);
+        document.body.querySelector("#traits").appendChild(traitDiv);
+    });
 });
 
 document.querySelector("select#brands").addEventListener("change", (e) => {
