@@ -78,7 +78,7 @@ document.querySelector("select#gender").addEventListener("change", (e) => {
         console.log(trait);
         let traitDiv = document.createElement("div");
         let traitLabel = document.createElement("label");
-        traitLabel.innerText = trait.key;
+        traitLabel.innerText = trait.key.replace(/_/g," ") + ": ";
         traitDiv.appendChild(traitLabel);
         let traitInput = document.createElement("select");
         traitInput.id = trait.key;
@@ -87,7 +87,7 @@ document.querySelector("select#gender").addEventListener("change", (e) => {
         for (let i = 0; i < trait.options.length; i++) {
             let option = document.createElement("option");
             option.value = trait.options[i].value;
-            option.innerText = trait.options[i].value;
+            option.innerText = trait.options[i].value == "-1" ? "None" : trait.options[i].value;
             traitInput.appendChild(option);
         }
         traitDiv.appendChild(traitInput);
