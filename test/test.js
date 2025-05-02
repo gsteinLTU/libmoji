@@ -115,15 +115,30 @@ document.querySelector("select#brands").addEventListener("change", (e) => {
 // Change gender to trigger the event
 document.querySelector("select#gender").dispatchEvent(new Event('change'));
 
+const getColor = (colorNumber) => {
+    const r = (colorNumber >> 16) & 0xFF;
+    const g = (colorNumber >> 8)  & 0xFF;
+    const b = colorNumber         & 0xFF;
+  
+    return `rgba(${r}, ${g}, ${b}, 1)`;
+};
 
 // For each skin tone, add a div with a bitmoji using it and the ID
-let skinTones = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "skin_tone")[0].options.map((option) => option.value);
+let skinTones = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "skin_tone")[0].options.map((option) => option.value).sort();
 console.log(skinTones);
 skinTones.forEach((skinTone) => {
     let div = document.createElement('div');
     let text = document.createElement('p');
     text.innerText = `Skin Tone: ${skinTone}`;
     div.appendChild(text);
+
+    // Create a div for the skin tone
+    let skinToneDiv = document.createElement('div');
+    skinToneDiv.style.width = "50px";
+    skinToneDiv.style.height = "50px";
+    skinToneDiv.style.backgroundColor = getColor(skinTone);
+    skinToneDiv.style.borderRadius = "50%";
+    div.appendChild(skinToneDiv);
 
     let img = document.createElement('img');
     img.src = libmoji.buildPreviewUrl("head",3,1,5,0,[["skin_tone",skinTone]], "");
@@ -142,6 +157,15 @@ hairColors.forEach((hairColor) => {
     let text = document.createElement('p');
     text.innerText = `Hair Color: ${hairColor}`;
     div.appendChild(text);
+
+    // Create a div for the hair color
+    let hairColorDiv = document.createElement('div');
+    hairColorDiv.style.width = "50px";
+    hairColorDiv.style.height = "50px";
+    hairColorDiv.style.backgroundColor = getColor(hairColor);
+    hairColorDiv.style.borderRadius = "50%";
+    div.appendChild(hairColorDiv);
+    
 
     let img = document.createElement('img');
     img.src = libmoji.buildPreviewUrl("head",3,1,5,0,[["hair_tone",hairColor]], "");
