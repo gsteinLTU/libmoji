@@ -188,3 +188,5 @@ hairStyles2.forEach((hairStyle) => {
 
     document.body.querySelector("#hairStyles").appendChild(div);
 });
+
+console.log(libmoji.styles);

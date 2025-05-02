@@ -1,3 +1,6 @@
+type Gender = "male" | "female";
+type Pose = "fashion" | "head" | "body";
+
 // holds all possible traits and outfits
 const assets = require("./json/assets.json");
 
@@ -11,7 +14,12 @@ const templates = apiData["imoji"]; // consider renaming too 'imoji' for passthr
 const friends = apiData["friends"];
 
 // holds all possible genders and their values
-const genders = [["male",1],["female",2]];
+const genders: [Gender, number][] = [["male",1],["female",2]];
+
+const genderIds: Record<Gender, number> = {
+  "male": 1,
+  "female": 2
+};
 
 // holds all possible avatar poses
 const poses = ["fashion","head","body"];
@@ -30,10 +38,10 @@ const baseCpanelUrl = "https://render.bitstrips.com/v2/cpanel/";
 const baseRenderUrl = "https://render.bitstrips.com/render/";
 
 // returns an object with a list of all possible traits for a gender and style
-const getTraits = (gender, style) => assets["traits"][gender][style]["categories"];
+const getTraits = (gender: Gender) => assets["traits"][gender]["cm"]["categories"];
 
 // returns an object with a list of all possible brands for a gender
-const getBrands = (gender) => assets["outfits"][gender]["brands"];
+const getBrands = (gender: Gender) => assets["outfits"][gender]["brands"];
 
 // returns an object with a list of all possible outfits for a brand
 const getOutfits = (brand) => brand["outfits"];
@@ -45,16 +53,16 @@ const getValues = (trait) => trait["options"];
 const getKey = (trait) => trait["key"];
 
 //return the avatar uuid from a comic url as a string
-const getAvatarUuid = (url) => url.split('-').slice(5,10).join('-');
+const getAvatarUuid = (url: string) => url.split('-').slice(5,10).join('-');
 
 // returns the avatar id from a comic url as a string
-const getAvatarId = (url) => url.split('-').slice(1,3).join('-');
+const getAvatarId = (url: string) => url.split('-').slice(1,3).join('-');
 
 // returns the comic id as a string
 const getComicId = (template) => template["comic_id"];
 
 // returns a random integer between 0 (included) and the max (excluded)
-const randInt = (max) => Math.floor(Math.random() * Math.floor(max));
+const randInt = (max: number) => Math.floor(Math.random() * Math.floor(max));
 
 // returns a random brand object which contains outfits
 const randBrand = (brands) => brands[randInt(brands.length)];
@@ -108,7 +116,10 @@ const filterBrands = (brands, filters, returnFilteredFields = false) => {
 }
 
 // returns the image url of a bitmoji avatar with the specified parameters
-function buildPreviewUrl (pose, scale, gender, style, rotation, traits, outfit) {
+function buildPreviewUrl (pose: Pose, scale: number, gender: number | Gender, style, rotation: number, traits, outfit) {
+  if(typeof gender === 'string') {
+    gender = genderIds[gender];
+  }
 
   // use string templating to build the url
   let url = `${basePreviewUrl}${pose}?scale=${scale}&gender=${gender}&style=${style}`
@@ -127,7 +138,7 @@ function buildRenderUrl (comicId, avatarId, transparent, scale, outfit) {
 }
 
 // returns the image url of a friendmoji comic with the specified paramters
-function buildFriendmojiUrl (comicId, avatarId1, avatarId2, transparent, scale) {
+function buildFriendmojiUrl (comicId: string, avatarId1: string, avatarId2: string, transparent: boolean, scale: number) {
   return `${baseCpanelUrl}${comicId}-${avatarId1}-${avatarId2}-v3.png?transparent=${transparent}&scale=${scale}`;
 }
 // export all functions to be used
@@ -158,6 +169,6 @@ export default {
   randTemplate: randTemplate,
   buildPreviewUrl: buildPreviewUrl,
   buildCpanelUrl:  buildCpanelUrl,
-  buildRenderUrl, buildRenderUrl,
+  buildRenderUrl: buildRenderUrl,
   buildFriendmojiUrl: buildFriendmojiUrl
 };
