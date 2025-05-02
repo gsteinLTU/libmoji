@@ -116,3 +116,75 @@ document.querySelector("select#brands").addEventListener("change", (e) => {
 document.querySelector("select#gender").dispatchEvent(new Event('change'));
 
 
+// For each skin tone, add a div with a bitmoji using it and the ID
+let skinTones = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "skin_tone")[0].options.map((option) => option.value);
+console.log(skinTones);
+skinTones.forEach((skinTone) => {
+    let div = document.createElement('div');
+    let text = document.createElement('p');
+    text.innerText = `Skin Tone: ${skinTone}`;
+    div.appendChild(text);
+
+    let img = document.createElement('img');
+    img.src = libmoji.buildPreviewUrl("head",3,1,5,0,[["skin_tone",skinTone]], "");
+    img.width = 100; // Reduced width to fit better with text
+    img.id = `skinTone-${skinTone}`; // Make ID more specific
+    div.appendChild(img);
+
+    document.body.querySelector("#skinTones").appendChild(div);
+});
+
+// For each hair color, add a div with a bitmoji using it and the ID
+let hairColors = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "hair_tone")[0].options.map((option) => option.value);
+console.log(hairColors);
+hairColors.forEach((hairColor) => {
+    let div = document.createElement('div');
+    let text = document.createElement('p');
+    text.innerText = `Hair Color: ${hairColor}`;
+    div.appendChild(text);
+
+    let img = document.createElement('img');
+    img.src = libmoji.buildPreviewUrl("head",3,1,5,0,[["hair_tone",hairColor]], "");
+    img.width = 100; // Reduced width to fit better with text
+    img.id = `hairColor-${hairColor}`; // Make ID more specific
+    div.appendChild(img);
+
+    document.body.querySelector("#hairColors").appendChild(div);
+});
+
+
+// For each hair style, add a div with a bitmoji using it and the ID
+let hairStyles = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value);
+console.log(hairStyles);
+hairStyles.forEach((hairStyle) => {
+    let div = document.createElement('div');
+    let text = document.createElement('p');
+    text.innerText = `Hair Style: ${hairStyle}`;
+    div.appendChild(text);
+
+    let img = document.createElement('img');
+    img.src = libmoji.buildPreviewUrl("head",3,1,5,0,[["hair",hairStyle]], "");
+    img.width = 100; // Reduced width to fit better with text
+    img.id = `hairStyle-${hairStyle}`; // Make ID more specific
+    div.appendChild(img);
+
+    document.body.querySelector("#hairStyles").appendChild(div);
+});
+
+let hairStyles2 = libmoji.getTraits("female",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value);
+console.log(hairStyles2);
+
+hairStyles2.forEach((hairStyle) => {
+    let div = document.createElement('div');
+    let text = document.createElement('p');
+    text.innerText = `Hair Style: ${hairStyle}`;
+    div.appendChild(text);
+
+    let img = document.createElement('img');
+    img.src = libmoji.buildPreviewUrl("head",3,2,5,0,[["hair",hairStyle]], "");
+    img.width = 100; // Reduced width to fit better with text
+    img.id = `hairStyle-${hairStyle}`; // Make ID more specific
+    div.appendChild(img);
+
+    document.body.querySelector("#hairStyles").appendChild(div);
+});
