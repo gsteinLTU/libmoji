@@ -154,7 +154,7 @@ hairColors.forEach((hairColor) => {
 
 
 // For each hair style, add a div with a bitmoji using it and the ID
-let hairStyles = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value);
+let hairStyles = libmoji.getTraits("male",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value).sort();
 console.log(hairStyles);
 hairStyles.forEach((hairStyle) => {
     let div = document.createElement('div');
@@ -171,22 +171,25 @@ hairStyles.forEach((hairStyle) => {
     document.body.querySelector("#hairStyles").appendChild(div);
 });
 
-let hairStyles2 = libmoji.getTraits("female",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value);
+let hairStyles2 = libmoji.getTraits("female",libmoji.styles[0][0]).filter((trait) => trait.key == "hair")[0].options.map((option) => option.value).sort();
 console.log(hairStyles2);
 
-hairStyles2.forEach((hairStyle) => {
-    let div = document.createElement('div');
-    let text = document.createElement('p');
-    text.innerText = `Hair Style: ${hairStyle}`;
-    div.appendChild(text);
+// Check if the hair styles are the same for both genders
+let sameHairStyles = hairStyles.length === hairStyles2.length && hairStyles.every((value, index) => value === hairStyles2[index]);
 
-    let img = document.createElement('img');
-    img.src = libmoji.buildPreviewUrl("head",3,2,5,0,[["hair",hairStyle]], "");
-    img.width = 100; // Reduced width to fit better with text
-    img.id = `hairStyle-${hairStyle}`; // Make ID more specific
-    div.appendChild(img);
+if (!sameHairStyles) {
+    hairStyles2.forEach((hairStyle) => {
+        let div = document.createElement('div');
+        let text = document.createElement('p');
+        text.innerText = `Hair Style: ${hairStyle}`;
+        div.appendChild(text);
 
-    document.body.querySelector("#hairStyles").appendChild(div);
-});
+        let img = document.createElement('img');
+        img.src = libmoji.buildPreviewUrl("head",3,2,5,0,[["hair",hairStyle]], "");
+        img.width = 100; // Reduced width to fit better with text
+        img.id = `hairStyle-${hairStyle}`; // Make ID more specific
+        div.appendChild(img);
 
-console.log(libmoji.styles);
+        document.body.querySelector("#hairStyles").appendChild(div);
+    });
+}
