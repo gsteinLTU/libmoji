@@ -1,5 +1,5 @@
 type Gender = "male" | "female";
-type Pose = "fashion" | "head" | "body";
+type Pose = "head" | "body";
 
 // holds all possible traits and outfits
 const assets = require("./json/assets.json");
@@ -22,7 +22,8 @@ const genderIds: Record<Gender, number> = {
 };
 
 // holds all possible avatar poses
-const poses = ["fashion","head","body"];
+//const poses = ["fashion","head","body"];
+const poses = ["head","body"];
 
 // holds all possible styles and their values
 //const styles = [["bitstrips",1],["bitmoji",4],["cm",5]];
