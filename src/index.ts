@@ -142,6 +142,18 @@ function buildRenderUrl (comicId, avatarId, transparent, scale, outfit) {
 function buildFriendmojiUrl (comicId: string, avatarId1: string, avatarId2: string, transparent: boolean, scale: number) {
   return `${baseCpanelUrl}${comicId}-${avatarId1}-${avatarId2}-v3.png?transparent=${transparent}&scale=${scale}`;
 }
+
+function getColorCode(r: number, g: number, b: number) {
+  return (r << 16) | (g << 8) | b;
+}
+
+function getColorFromCode(colorCode: number) {
+  const r = (colorCode >> 16) & 0xFF;
+  const g = (colorCode >> 8) & 0xFF;
+  const b = colorCode & 0xFF;
+  return { r, g, b };
+}
+
 // export all functions to be used
 export default {
   templates: templates,
@@ -171,5 +183,7 @@ export default {
   buildPreviewUrl: buildPreviewUrl,
   buildCpanelUrl:  buildCpanelUrl,
   buildRenderUrl: buildRenderUrl,
-  buildFriendmojiUrl: buildFriendmojiUrl
+  buildFriendmojiUrl: buildFriendmojiUrl,
+  getColorCode: getColorCode,
+  getColorFromCode: getColorFromCode,
 };
